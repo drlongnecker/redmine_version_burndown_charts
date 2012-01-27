@@ -14,6 +14,8 @@ Redmine::Plugin.register :redmine_version_burndown do
     permission :version_burndown_charts_view, :version_burndown_charts => :index
   end
 
-  menu :project_menu, :version_burndown_charts, { :controller => 'version_burndown_charts', :action => 'index' },
-  :caption => :version_burndown_charts, :after => :activity, :param => :project_id
+ # menu :project_menu, :version_burndown_charts, { :controller => 'version_burndown_charts', :action => 'index' },
+ # :caption => :version_burndown_charts, :after => :activity, :param => :project_id
+ menu :project_menu, :version_burndown_charts, { :controller => 'version_burndown_charts', :action => 'index' },
+ :caption => :version_burndown_charts, :after => :activity, :params => :project_id
 end

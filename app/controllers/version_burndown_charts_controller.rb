@@ -1,7 +1,14 @@
 class VersionBurndownChartsController < ApplicationController
   unloadable
   menu_item :version_burndown_charts
-  before_filter :find_project, :find_versions, :find_version_issues, :find_burndown_dates, :find_version_info, :find_issues_closed_status
+
+  before_filter :find_project 
+
+  before_filter :find_versions
+  before_filter :find_version_issues
+  before_filter :find_burndown_dates
+  before_filter :find_version_info
+  before_filter :find_issues_closed_status
   
   def index
     relative_url_path =
@@ -9,7 +16,7 @@ class VersionBurndownChartsController < ApplicationController
 
     @graph =
       open_flash_chart_object( 880, 450,
-        url_for( :action => 'get_graph_data',:project_id => @project.identifier ,:version_id => @version.id ),
+        url_for( :action => 'get_graph_data',:project_id => @project.identifier, :version_id => @version.id ),
           true, "#{relative_url_path}/" )
   end
 
@@ -183,22 +190,11 @@ class VersionBurndownChartsController < ApplicationController
   end
 
   def find_project
-
-    logger.debug("params[:project_id].class #{params[:project_id].class}")
-
-    if params[:project_id].blank?
-      flash[:error] = l(:version_burndown_charts_project_nod_found, :project_id => 'parameter not found.')
-      render_404
-      return
-    end
-
-    begin
-      @project = Project.find(params[:project_id])
-    rescue ActiveRecord::RecordNotFound
-      flash[:error] = l(:version_burndown_charts_project_nod_found, :project_id => params[:project_id])
-      render_404
-      return
-    end 
+    project_id = params[:id]
+    @project = Project.find(project_id)
+  rescue ActiveRecord::RecordNotFound
+    flash[:error] = "#{params[:id]} not found"
+    render_404
   end
 
   def find_versions
