@@ -1,16 +1,21 @@
-= redmine_version_burndown
-ja:
-* このプラグインは、バージョンに存在するチケットの予定工数と作業実績からバーンダウンチャートを作成します。
+= Redmine Burndown by Version Graphs
+== redmine_version_burndown_charts
 
-en:
+UPDATE: 26 january 2012: Reworking this plugin to use the new routing for Redmine v1.3.devel and future
+v1.4 releases.
+
+Graphs and version information up to date.
+
+TODO: 
+* reset and resume using locale specific information
+* remove params and use built-in :id instead.
+
+
+== original README
+
 * Version Burndown Charts Plugin create burndown chart graph for scrum from ticket's estimated hours and %Done in target version.
 
 == Details
-ja:
-* バーンダウンチャートの開始日は、バージョン内にあるチケットの中で、最も早い開始日となります。
-* 実績の線は、チケットの完了日時（ジャーナルファイル）と、そのチケットの予定工数と進捗を使って計算しています。
-
-en:
 * The start date of the burndown chart is assumed to be earliest start date in the ticket in the version.
 * The line of performanse is calculated by the completion date of the ticket (by journal file) and the ticket's estimated hours and %Done. 
 
@@ -27,7 +32,7 @@ en:
 * Rename the plugin directory to redmine_version_burndown_charts
 	* If you want to get from GIthub, please use following command.
      cd ${RAILS_ROOT}
-     git clone git://github.com/daipresents/redmine_version_burndown_charts.git vendor/plugins/redmine_version_burndown_chart
+     git clone git://github.com/drlongnecker/redmine_version_burndown_charts.git vendor/plugins/redmine_version_burndown_charts
 * Restart Redmine.
 * Login and configure the plugin (Administration > Roles and permissions > Permissions report)
 * Configure the project (Project > Settings > Modules).
