@@ -15,7 +15,7 @@ class VersionBurndownChartsController < ApplicationController
       ActionController::Base.respond_to?(:relative_url_root) ? ActionController::Base.relative_url_root : ActionController::AbstractRequest.relative_url_root
 
     @graph =
-      open_flash_chart_object( 880, 450,
+      open_flash_chart_object( '100%', 500,
         url_for( :action => 'get_graph_data',:project_id => @project.identifier, :version_id => @version.id ),
           true, "#{relative_url_path}/" )
   end
