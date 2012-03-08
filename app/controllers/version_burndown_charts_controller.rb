@@ -192,13 +192,14 @@ class VersionBurndownChartsController < ApplicationController
   def find_project
     project_id = params[:id]
     @project = Project.find(project_id)
+    @project_ids = [@project.id] + @project.descendants.active.visible.collect(&:id)
   rescue ActiveRecord::RecordNotFound
     flash[:error] = "#{params[:id]} not found"
     render_404
   end
 
   def find_versions
-    versions = @project.versions.select(&:effective_date).sort_by(&:effective_date)
+    versions = @project.shared_versions.select(&:effective_date).sort_by(&:effective_date)
     @open_versions = versions.select{|version| version.status == 'open'}
     @locked_versions = versions.select{|version| version.status == 'locked'}
     @closed_versions = versions.select{|version| version.status == 'closed'}
@@ -225,10 +226,13 @@ class VersionBurndownChartsController < ApplicationController
   end
 
   def find_version_issues
+    logger.debug("@project_ids #{@project_ids.join(',')}");
     @version_issues = Issue.find_by_sql([
           "select * from issues
              where fixed_version_id = :version_id and start_date is not NULL and
-               estimated_hours is not NULL order by start_date asc",
+               estimated_hours is not NULL and
+               project_id IN ( #{@project_ids.join(',')} )
+             order by start_date asc",
                  {:version_id => @version.id}])
     if @version_issues.empty?
       flash[:error] = l(:version_burndown_charts_issues_not_found, :version_name => @version.name)
@@ -257,7 +261,7 @@ class VersionBurndownChartsController < ApplicationController
       flash[:error] = l(:version_burndown_charts_issues_start_date_or_estimated_date_not_found, :version_name => @version.name)
       render :action => "index" and return false
     end
-    @estimated_hours = round(@version.estimated_hours)
+    @estimated_hours = round(@version.fixed_issues.leaves.sum(:estimated_hours, :conditions => ["project_id IN (?)", @project_ids]).to_f)
     logger.debug("@estimated_hours #{@estimated_hours}")
   end
 
