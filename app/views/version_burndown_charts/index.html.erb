@@ -10,15 +10,28 @@
 
 <% content_for :sidebar do -%>
   <h3><%= l(:version_burndown_charts_version_info) %></h3>
-  <div><strong><%=l(:version_burndown_charts_versions_name)%>:<%=link_to(@version.name, :controller => 'versions', :action => 'show', :id => @version.id) %></strong></div>
-  <div>Estimated hours: <%=@estimated_hours%>h</div>
+  <div><strong><%=l(:version_burndown_charts_versions_name)%>: <%=link_to(@version.name, :controller => 'versions', :action => 'show', :id => @version.id) %></strong></div>
+  <br/>
+  <div><%=l(:version_burndown_charts_estimated_hours, :estimated_hours => @estimated_hours)%></div>
+  <div><%=l(:version_burndown_charts_spent_hours, :spent_hours => @version.spent_hours)%></div>
+  <br/>
+  <div><%=l(:version_burndown_charts_issues_count, :issues_count  => @version.issues_count)%></div>
+  <div><%=l(:version_burndown_charts_open_issues_count, :open_issues_count => @version.open_issues_count)%> (<%=@open_pourcent%>%)</div>
+  <div><%=l(:version_burndown_charts_closed_issues_count, :closed_issues_count => @version.closed_issues_count)%> (<%=@closed_pourcent%>%)</div>
+  <br/>
+  <div><%=l(:version_burndown_charts_start_date, :start_date => @start_date)%></div>
+  <div><%=l(:version_burndown_charts_due_date, :due_date => @version.due_date)%></div>
+  <div><%=l(:version_burndown_charts_sprint_range, :sprint_range => @sprint_range)%></div>
+  
+
+<!--  <div>Estimated hours: <%=@estimated_hours%>h</div>
   <div>Spent hours: <%=@version.spent_hours%>h</div>
   <div>Total issues: <%=@version.issues_count%></div>
   <div>Open issues: <%=@version.open_issues_count%> (<%=@open_pourcent%>%)</div>
   <div>Closed issues: <%=@version.closed_issues_count%> (<%=@closed_pourcent%>%)</div>
   <div>Start date: <%=@start_date%></div>
   <div>Due date: <%=@version.due_date%></div>
-  <div>Sprint span: <%=@sprint_range%> days</div>
+  <div>Sprint span: <%=@sprint_range%> days</div>-->
 
 
   <h4><%= l(:version_burndown_charts_versions_open) %></h4>
